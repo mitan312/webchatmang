@@ -82,6 +82,5 @@ def handle_message(msg):
 
 # Chạy server
 if __name__ == "__main__":
-    if not os.path.exists(USER_FILE):
-        save_users({})
-    socketio.run(app, host="127.0.0.1", port=5000, debug=True)
+    # Nếu dùng Flask-SocketIO
+    socketio.run(app, host="127.0.0.1", port=5000, debug=True, use_reloader=False)
