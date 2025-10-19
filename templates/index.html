@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Phòng Chat - Galaxy</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  </head>
+
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        <h2>🌠 Xin chào, {{ username }}!</h2>
+        <a href="/logout" class="logout-btn">Đăng xuất</a>
+      </div>
+
+      <div class="chat-box">
+        <div class="chat-messages" id="messages"></div>
+
+        <div class="chat-input">
+          <input
+            id="myMessage"
+            autocomplete="off"
+            placeholder="Nhập tin nhắn của bạn..."
+          />
+          <button id="sendBtn">🚀 Gửi</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const socket = io();
+      const msgList = document.getElementById("messages");
+      const msgInput = document.getElementById("myMessage");
+      const sendBtn = document.getElementById("sendBtn");
+
+      sendBtn.onclick = () => {
+        const msg = msgInput.value.trim();
+        if (!msg) return;
+        socket.send(msg);
+        msgInput.value = "";
+      };
+
+      socket.on("message", (msg) => {
+        const div = document.createElement("div");
+        div.classList.add("message");
+        div.textContent = msg;
+        msgList.appendChild(div);
+        msgList.scrollTop = msgList.scrollHeight;
+      });
+    </script>
+  </body>
+</html>
